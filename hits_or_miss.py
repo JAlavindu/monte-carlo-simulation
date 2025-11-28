@@ -1,8 +1,8 @@
 def hit_miss(x, y):
-    radius = (x**2 + y**2)**0.5
+    distance_squared = x**2 + y**2
     hittinG_count = 0
     missing_count = 0
-    if radius <= 1:
+    if distance_squared <= 1:
         hittinG_count += 1
         
     else:

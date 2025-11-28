@@ -26,15 +26,15 @@ def main():
         total_hitting_count += hitting_count
         total_missing_count += missing_count
 
-        match N:
-            case 1000:
-                excel_writer(N, total_hitting_count)
-            case 10000:
-                excel_writer(N, total_hitting_count)
-            case 100000:
-                excel_writer(N, total_hitting_count)
-            case 1000000:
-                excel_writer(N, total_hitting_count)
+    match N:
+        case 1000:
+            excel_writer(N, total_hitting_count)
+        case 10000:
+            excel_writer(N, total_hitting_count)
+        case 100000:
+            excel_writer(N, total_hitting_count)
+        case 1000000:
+            excel_writer(N, total_hitting_count)
         
     print(f"total hitting count: {total_hitting_count}")
     print(f"total missing count: {total_missing_count}")

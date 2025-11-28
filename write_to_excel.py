@@ -13,7 +13,7 @@ def excel_writer(total_throws, total_hitting_count):
     }
 
     df = pd.DataFrame(data)
-    file_name = f'dart_simulation_{total_throws}_throws.xlsx'
+    file_name = f'dart_simulation_.xlsx'
     df.to_excel(file_name, index=False)
 
 
