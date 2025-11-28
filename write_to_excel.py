@@ -2,49 +2,24 @@ from hitting_probability import hitting_prob
 import pandas as pd
 import os
 
-def excel_writer(total_throws, total_hitting_count):
-    # Ensure inputs are lists to support multiple rows
-    if not isinstance(total_throws, list):
-        total_throws = [total_throws]
-    if not isinstance(total_hitting_count, list):
-        total_hitting_count = [total_hitting_count]
-
-    data = {
-        'total throws': [],
-        'total hitting count': [],
-        'hitting probability (%)': [],
-        'estimated value of Pi': []
-    }
-
-    for t, h in zip(total_throws, total_hitting_count):
-        hitting_probability = hitting_prob(h, t)
-        pi = (hitting_probability / 100) * 4
-        
-        data['total throws'].append(t)
-        data['total hitting count'].append(h)
-        data['hitting probability (%)'].append(round(hitting_probability, 2))
-        data['estimated value of Pi'].append(round(pi, 6))
-
-    new_df = pd.DataFrame(data)
+def excel_writer(records):
+    # records is expected to be a list of dictionaries
+    new_df = pd.DataFrame(records)
     file_name = f'dart_simulation_.xlsx'
     
     if os.path.exists(file_name):
         try:
             existing_df = pd.read_excel(file_name)
             
-            for index, row in new_df.iterrows():
-                # Check if 'total throws' exists in the existing dataframe
-                mask = existing_df['total throws'] == row['total throws']
-                
-                if mask.any():
-                    # Update existing row
-                    for col in new_df.columns:
-                        existing_df.loc[mask, col] = row[col]
-                else:
-                    # Append new row
-                    existing_df = pd.concat([existing_df, pd.DataFrame([row])], ignore_index=True)
+            # Get the unique 'total throws' from the new data
+            new_throws = new_df['total throws'].unique()
             
-            df = existing_df
+            # Remove existing rows that match the new 'total throws'
+            # This ensures we replace the old experiment data with the new 10-run data
+            existing_df = existing_df[~existing_df['total throws'].isin(new_throws)]
+            
+            # Concatenate the filtered existing data with the new data
+            df = pd.concat([existing_df, new_df], ignore_index=True)
             
         except Exception as e:
             print(f"Could not read existing file: {e}")
