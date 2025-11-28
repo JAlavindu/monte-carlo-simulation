@@ -21,7 +21,7 @@ def main():
         x = random.uniform(-1, 1)
         y = random.uniform(-1, 1)
         
-        hittinG_count , missing_count= hit_miss(x, y , N)
+        hittinG_count , missing_count= hit_miss(x, y)
         total_hitting_count += hittinG_count
         total_missing_count += missing_count
         

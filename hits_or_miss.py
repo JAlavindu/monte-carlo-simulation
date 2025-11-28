@@ -1,4 +1,4 @@
-def hit_miss(x, y , N):
+def hit_miss(x, y):
     radius = (x**2 + y**2)**0.5
     hittinG_count = 0
     missing_count = 0
