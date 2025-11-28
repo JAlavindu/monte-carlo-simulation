@@ -1,5 +1,6 @@
 from hitting_probability import hitting_prob
 import pandas as pd
+import os
 
 def excel_writer(total_throws, total_hitting_count):
     # Ensure inputs are lists to support multiple rows
@@ -25,9 +26,20 @@ def excel_writer(total_throws, total_hitting_count):
         data['estimated value of Pi'].append(round(pi, 6))
 
     df = pd.DataFrame(data)
-    file_name = f'dart_simulation.xlsx'
-    df.to_excel(file_name, index=False)
-    print(f"Data saved to {file_name}")
+    file_name = f'dart_simulation_.xlsx'
+    
+    if os.path.exists(file_name):
+        try:
+            existing_df = pd.read_excel(file_name)
+            df = pd.concat([existing_df, df], ignore_index=True)
+        except Exception as e:
+            print(f"Could not read existing file: {e}")
 
-
+    try:
+        df.to_excel(file_name, index=False)
+        print(f"Data saved to {file_name}")
+    except PermissionError:
+        print(f"Error: Permission denied. Please close '{file_name}' if it is open in Excel and try again.")
+    except Exception as e:
+        print(f"An error occurred while saving the file: {e}")
 

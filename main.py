@@ -20,8 +20,6 @@ def main():
     total_missing_count = 0
     
     milestones = [1000, 10000, 100000, 1000000]
-    history_throws = []
-    history_hits = []
 
     for i in range(N):
         x = random.uniform(-1, 1)
@@ -33,9 +31,7 @@ def main():
 
         current_throws = i + 1
         if current_throws in milestones:
-            history_throws.append(current_throws)
-            history_hits.append(total_hitting_count)
-            excel_writer(history_throws, history_hits)
+            excel_writer(current_throws, total_hitting_count)
         
     print(f"total hitting count: {total_hitting_count}")
     print(f"total missing count: {total_missing_count}")
