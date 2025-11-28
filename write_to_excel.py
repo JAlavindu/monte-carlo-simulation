@@ -25,15 +25,32 @@ def excel_writer(total_throws, total_hitting_count):
         data['hitting probability (%)'].append(round(hitting_probability, 2))
         data['estimated value of Pi'].append(round(pi, 6))
 
-    df = pd.DataFrame(data)
+    new_df = pd.DataFrame(data)
     file_name = f'dart_simulation_.xlsx'
     
     if os.path.exists(file_name):
         try:
             existing_df = pd.read_excel(file_name)
-            df = pd.concat([existing_df, df], ignore_index=True)
+            
+            for index, row in new_df.iterrows():
+                # Check if 'total throws' exists in the existing dataframe
+                mask = existing_df['total throws'] == row['total throws']
+                
+                if mask.any():
+                    # Update existing row
+                    for col in new_df.columns:
+                        existing_df.loc[mask, col] = row[col]
+                else:
+                    # Append new row
+                    existing_df = pd.concat([existing_df, pd.DataFrame([row])], ignore_index=True)
+            
+            df = existing_df
+            
         except Exception as e:
             print(f"Could not read existing file: {e}")
+            df = new_df
+    else:
+        df = new_df
 
     try:
         df.to_excel(file_name, index=False)
